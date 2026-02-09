@@ -40,8 +40,9 @@ async def execute_sql(sql: str) -> List[Dict]:
 #  - Take no inputs
 #  - Return the list of table names available in the current database
 # Hint: Query `information_schema.tables` and filter for `table_schema = 'public'`.
+
 @mcp.tool()
-async def list_tables() -> List[str]:
+async def list_tables() -> Dict[str, List[str]]:
     """Return the list of table names available in the current database."""
     sql = """
         SELECT table_name
@@ -52,7 +53,8 @@ async def list_tables() -> List[str]:
         with conn.cursor() as cur:
             cur.execute(sql)
             rows = [r[0] for r in cur.fetchall()]
-    return rows
+    return {"tables": rows}  # -- same return
+    
 
 @mcp.tool()
 async def get_schema(table: str) -> List[Dict]:
